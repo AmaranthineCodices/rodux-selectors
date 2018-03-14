@@ -2,6 +2,23 @@ local RoduxSelectors = {}
 
 function RoduxSelectors.createSelector(...)
     local count = select("#", ...)
+
+    -- Aggressively validate arguments
+    if count < 1 then
+        error("expected 1 or more arguments to createSelector, got 0", 2)
+    end
+
+    for i = 1, count do
+        local arg = select(i, ...)
+
+        if typeof(arg) ~= "function" then
+            error(("bad argument #%d to createSelector: expected function, got %q"):format(
+                i,
+                typeof(arg)
+            ))
+        end
+    end
+
     local dependencies = { ... }
     -- Remove the last value from the table. This is the selector being created.
     table.remove(dependencies, count)
