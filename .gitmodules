@@ -1,0 +1,9 @@
+[submodule "lib/rodux"]
+	path = lib/rodux
+	url = https://github.com/Roblox/rodux
+[submodule "lib/testez"]
+	path = lib/testez
+	url = https://github.com/Roblox/testez
+[submodule "lib/lemur"]
+	path = lib/lemur
+	url = https://github.com/LPGhatGuy/lemur
