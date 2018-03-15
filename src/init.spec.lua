@@ -17,8 +17,8 @@ return function()
 
         it("should throw if passed a non-function argument", function()
             expect(function()
-                Selector.createSelector(print, 1, warn)
-            end)
+                Selector.createSelector(print, warn, true, error)
+            end).to.throw()
         end)
 
         it("selectors should return a value", function()
