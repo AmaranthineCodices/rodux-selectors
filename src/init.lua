@@ -15,7 +15,7 @@ function RoduxSelectors.createSelector(...)
             error(("bad argument #%d to createSelector: expected function, got %q"):format(
                 i,
                 typeof(arg)
-            ))
+            ), 2)
         end
     end
 
