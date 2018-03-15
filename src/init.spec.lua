@@ -71,9 +71,9 @@ return function()
                 return value
             end
 
-            local selector = Selector.createSelector(dependency, function(value)
+            local selector = Selector.createSelector(dependency, function(dependentValue)
                 selectorCallCount = selectorCallCount + 1
-                return value + 1
+                return dependentValue + 1
             end)
 
             selector()
