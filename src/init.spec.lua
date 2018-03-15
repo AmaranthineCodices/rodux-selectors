@@ -60,5 +60,35 @@ return function()
             expect(value2).to.equal(2)
             expect(value3).to.equal(3)
         end)
+
+        it("selectors should only be called when their dependencies change", function()
+            local value = 0
+            local dependencyCallCount = 0
+            local selectorCallCount = 0
+
+            local function dependency()
+                dependencyCallCount = dependencyCallCount + 1
+                return value
+            end
+
+            local selector = Selector.createSelector(dependency, function(value)
+                selectorCallCount = selectorCallCount + 1
+                return value + 1
+            end)
+
+            selector()
+            expect(dependencyCallCount).to.equal(1)
+            expect(selectorCallCount).to.equal(1)
+
+            selector()
+            expect(dependencyCallCount).to.equal(2)
+            expect(selectorCallCount).to.equal(1)
+
+            value = 2
+
+            selector()
+            expect(dependencyCallCount).to.equal(3)
+            expect(selectorCallCount).to.equal(2)
+        end)
     end)
 end
