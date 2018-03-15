@@ -3,7 +3,7 @@ return function()
 
     describe("createSelector", function()
         it("should create selectors", function()
-            local testSelector = Selector.createSelector(function()
+            local testSelector = Selector.createSelector({}, function()
             end)
 
             expect(testSelector).to.be.ok()
@@ -15,9 +15,17 @@ return function()
             end).to.throw()
         end)
 
-        it("should throw if passed a non-function argument", function()
+        it("should throw if passed invalid arguments", function()
             expect(function()
-                Selector.createSelector(print, warn, true, error)
+                Selector.createSelector({ 1 }, print)
+            end).to.throw()
+
+            expect(function()
+                Selector.createSelector({ warn }, 2)
+            end).to.throw()
+
+            expect(function()
+                Selector.createSelector(nil, print)
             end).to.throw()
         end)
 
@@ -26,7 +34,7 @@ return function()
                 return 1
             end
 
-            local testSelector = Selector.createSelector(testSource, function(value1)
+            local testSelector = Selector.createSelector({ testSource }, function(value1)
                 return value1 * 2
             end)
 
@@ -49,7 +57,7 @@ return function()
 
             local value1, value2, value3
 
-            local selector = Selector.createSelector(a, b, c, function(v1, v2, v3)
+            local selector = Selector.createSelector({ a, b, c }, function(v1, v2, v3)
                 value1 = v1
                 value2 = v2
                 value3 = v3
@@ -71,7 +79,7 @@ return function()
                 return value
             end
 
-            local selector = Selector.createSelector(dependency, function(dependentValue)
+            local selector = Selector.createSelector({ dependency }, function(dependentValue)
                 selectorCallCount = selectorCallCount + 1
                 return dependentValue + 1
             end)

@@ -1,28 +1,26 @@
 local RoduxSelectors = {}
 
-function RoduxSelectors.createSelector(...)
-    local count = select("#", ...)
-
+function RoduxSelectors.createSelector(dependencies, selector)
     -- Aggressively validate arguments
-    if count < 1 then
-        error("expected 1 or more arguments to createSelector, got 0", 2)
-    end
+    if typeof(dependencies) ~= "table" then
+        error(("bad argument #1 to createSelector: expected function, got %q"):format(typeof(arg)), 2)
+    else
+        for index, dependency in ipairs(dependencies) do
+            local type = typeof(dependency)
 
-    for i = 1, count do
-        local arg = select(i, ...)
-
-        if typeof(arg) ~= "function" then
-            error(("bad argument #%d to createSelector: expected function, got %q"):format(
-                i,
-                typeof(arg)
-            ), 2)
+            if type ~= "function" then
+                -- luacheck: ignore 6
+                error(("bad argument #1 to createSelector: expected a table of functions\ndependency[%d] is not a function, is a %q"):format(
+                    index,
+                    type
+                ), 2)
+            end
         end
     end
 
-    local dependencies = { ... }
-    -- Remove the last value from the table. This is the selector being created.
-    table.remove(dependencies, count)
-    local selector = select(count, ...)
+    if typeof(selector) ~= "function" then
+        error(("bad argument #2 to createSelector: expected function, got %q"):format(typeof(arg)), 2)
+    end
 
     local dependencyCache = {}
     local cachedResult = nil
